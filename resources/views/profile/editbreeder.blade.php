@@ -20,7 +20,7 @@
             <div class="col-md-8">
                 <div class="box">
                     <div class="box-body">
-                        <form method="POST" action="{{ route('editbreeder.store') }}" enctype="multipart/form-data">
+                        <form method="POST" action="/breeder/edit/save" enctype="multipart/form-data">
                         @csrf
                             <div class="text-center">
                                 <img class="text-center" src="{{ Session::get('image')}}" height="250">
@@ -39,16 +39,12 @@
                             </div>
                             <div class="form-group">
                                 <label for="birthday">Tanggal Lahir</label>
-                                <input id="birthday" name="birthday" type="text" class="form-control" placeholder="{{ Session::get('ktp') }}">
+                                <input id="birthday" name="birthday" type="text" class="form-control" placeholder="{{ Session::get('birthday') }}">
                             </div>
                             <div class="form-group">
                                 <label for="ktp">No. KTP</label>
                                 <input id="ktp" name="ktp" type="text" class="form-control" placeholder="{{ Session::get('ktp') }}">
                             </div>
-                            {{-- <div class="form-group">
-                                <label for="fktp">Upload Foto KTP</label>
-                                <input type="file" name="fktp" class="form-control-file" id="fktp">
-                            </div> --}}
                             <div class="form-group">
                                 <label for="city">Kota</label>
                                 <input id="city" name="city" type="text" class="form-control" placeholder="{{ Session::get('city') }}">

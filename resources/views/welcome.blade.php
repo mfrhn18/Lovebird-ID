@@ -4,7 +4,7 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <title>Laravel</title>
+        <title>Lovebird ID</title>
 
         <!-- Fonts -->
         <link href="https://fonts.googleapis.com/css?family=Nunito:200,600" rel="stylesheet">
@@ -86,8 +86,8 @@
                 </div>
 
                 <div class="links">
-                    <a href="http://127.0.0.1:8000/login">Login</a>
-                    <a href="http://127.0.0.1:8000/register">Register</a>
+                    <a href="/login">Login</a>
+                    <a href="/register">Register</a>
                 </div>
             </div>
         </div>

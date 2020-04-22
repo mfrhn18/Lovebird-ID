@@ -40,7 +40,7 @@
                     <div class="icon">
                         <img class="rounded-circle" src="{{ asset('img/regbird.png')}}" alt="Generic placeholder image" width="70" height="70">
                     </div>
-                    <a href="regbird" class="small-box-footer">Add new <i class="fa fa-arrow-circle-right"></i></a>
+                    <a href="/birdfarm/regbird" class="small-box-footer">Add new <i class="fa fa-arrow-circle-right"></i></a>
                 </div>
             </div>
             <!-- ./col -->
@@ -54,7 +54,7 @@
                     <div class="icon">
                         <img class="rounded-circle" src="{{ asset('img/reginduk.png')}}" alt="Generic placeholder image" width="70" height="70">
                     </div>
-                    <a href="reginduk" class="small-box-footer">Add new <i class="fa fa-arrow-circle-right"></i></a>
+                    <a href="/birdfarm/reginduk" class="small-box-footer">Add new <i class="fa fa-arrow-circle-right"></i></a>
                 </div>
             </div>
             <!-- ./col -->
@@ -83,6 +83,7 @@
                                     <th>Bird Name</th>
                                     <th>Gender</th>
                                     <th>Warna Mutasi</th>
+                                    <th>Type</th>
                                     <th>Breeder</th>
                                     <th></th>
                                 </tr>
@@ -95,10 +96,11 @@
                                     <td>{{$collection['name']}}</td>
                                     <td>{{$collection['gender']}}</td>
                                     <td>{{$collection['species']}}</td>
+                                    <td>{{$collection['type']}}</td>
                                     <td>{{$collection['breeder']}}</td>
                                     <td>
                                         <div class="button">
-                                            <a href="{{ route('birddetails.show', $collection['id']) }}" type="button" class="btn btn-block btn-sm bg-orange">
+                                            <a href="/birdfarm/birddetails/{{$collection['id']}}" type="button" class="btn btn-block btn-sm bg-orange">
                                                 Details
                                             </a>
                                         </div>

@@ -18,7 +18,7 @@
     <!-- Small boxes (Stat box) -->
     <div class="row">
       <div class="col-lg-3 col-xs-6">
-        <div class="small-box bg-green">
+        {{-- <div class="small-box bg-green">
           <div class="inner">
             <h3>Register</h3>
             <p>Induk</p>
@@ -27,7 +27,7 @@
             <img class="rounded-circle" src="{{ asset('img/reginduk.png')}}" alt="Generic placeholder image" width="70" height="70">
           </div>
           <a href="reginduk" class="small-box-footer">Add new <i class="fa fa-arrow-circle-right"></i></a>
-        </div>
+        </div> --}}
       </div>
       <!-- ./col -->
     </div>
@@ -51,9 +51,12 @@
               <thead>
                 <tr>
                   <th>No. Parent</th>
+                  <th width="20%"></th>
                   <th>Male Ring</th>
                   <th>Female Ring</th>
                   <th>Produk ke</th>
+                  <th>Telur terlihat pada</th>
+                  <th>Mortality</th>
                   <th></th>
                 </tr>
               </thead>
@@ -61,11 +64,45 @@
               <tbody>
                 <tr>
                   <td>{{$parent['noParent']}}</td>
-                  <td>{{$parent['male']['ring']}}</td>
-                  <td>{{$parent['female']['ring']}}</td>
+                  <td><img class="img-fluid img-thumbnail" src="{{$parent['image']['src']}}"></td>
+                  <td>{{$parent['male']['ring']}} - {{$parent['male']['species']}}</td>
+                  <td>{{$parent['female']['ring']}} - {{$parent['female']['species']}}</td>
+                  <td>{{count($parent['breedingRecord'])}}</td>
+                  @php
+                    $date = 'n/a';
+                    foreach($parent['breedingRecord'] as $brec):
+                      if($brec['status'] == "on process"):
+                        foreach($brec['log'] as $log):
+                          if($log['type'] == "Bertelur"):
+                            $date = $log['timeStamp'];
+                          endif;
+                        endforeach;
+                        endif;
+                    endforeach;
+                  @endphp
+                  <td>{{$date}}</td>
+                  @php
+                    $mortality = 0;
+                    $born = 0;
+                    $dead = 0;
+                    foreach($parent['breedingRecord'] as $brec):
+                      if($brec['status'] == "Finish"):
+                        foreach($brec['log'] as $log):
+                          if($log['type'] == "Hatch"):
+                            $born += $log['born'];
+                            $dead += $log['dead'];
+                          endif;
+                        endforeach;
+                      endif;
+                    endforeach;
+                    if($born + $dead > 0):
+                      $mortality = ($born / ($born + $dead)) * 100;
+                    endif;
+                  @endphp
+                  <td>{{$mortality}}%</td>
                   <td>
                     <div class="button">
-                      <a href="{{ route('breedingdetails.show', $parent['id']) }}" type="button" class="btn btn-block btn-sm bg-orange">
+                      <a href="/breedingdetails/{{$parent['id']}}" type="button" class="btn btn-block btn-sm bg-orange">
                         Details
                       </a>
                     </div>

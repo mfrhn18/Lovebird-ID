@@ -21,18 +21,17 @@
                     <div class="col-md-12">
                         <form method="POST" action="{{ route('addimage.store') }}" enctype="multipart/form-data">
                             @csrf
-                            <p id="date" class="text-center"></p>
                             <div class="form-group">
                                 <label for="file">Upload Foto</label>
                                 <input type="file" name="file" class="form-control-file" id="file">
                             </div>
                             <div class="form-group">
-                                {{-- @foreach ($data['data']['user']['birdOwned'] as $bird)
                                 <label for="role">Jenis Burung</label><br>
-                                <select id="role" name="role" class="form-control">
-                                    <option selected>{{$bird['ring']}}</option>
+                                <select name="role" id="role" class="form-control">
+                                    @foreach($data['data']['user']['birdOwned'] as $bird)
+                                        <option selected value="{{$bird['id']}}">{{$bird['ring']}}</option>
+                                    @endforeach 
                                 </select>
-                                @endforeach --}}
                             </div>
                             <button type="submit" class="btn btn-primary">Simpan</button>
                         </form>

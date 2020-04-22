@@ -8,38 +8,80 @@ use GuzzleHttp\Client;
 
 class JournalController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
+    public function addjournal()
+    {
+        return view('finance.addjournal');
+    }
+
+    public function createjournal(Request $request)
+    {
+        $token = Session::get('token');
+        $month=$request->month;
+        $year=$request->year;
+        $timestamp=$year.'-'.$month;
+
+        $client = new Client;      
+        $request = $client->post(ENV('API_URLL'), [
+            'headers'=>[
+                'Authorization' => 'Bearer ' . $token
+            ],
+            'json' => [
+                'query' => 'query{user{journal{id timeStamp}
+                }}'
+                ]
+            ]
+        );
+        $response = $request->getBody()->getContents();
+        $data = json_decode($response, true);
+        $month = $data['data']['user']['journal'];
+        $monthCollect = collect();
+        foreach($month as $monthJournal){
+            $monthCollect->push($monthJournal['timeStamp']);
+        }
+        
+        if ($monthCollect->contains($timestamp)) {
+            return redirect('finance')->with('alert','Jurnal sudah tersedia!');
+        }
+        else{
+            $request = $client->post(ENV('API_URLL'), [
+                'headers'=>[
+                    'Authorization' => 'Bearer ' . $token
+                ],
+                'json' => [
+                    'query' => 'mutation{
+                        createJournal(
+                            timeStamp:"'.$timestamp.'"
+                        ){
+                            id
+                        }
+                    }'
+                    ]
+                ]
+            );
+
+            $response = $request->getBody()->getContents();
+            $data = json_decode($response, true);
+
+            return redirect('finance');
+        }
+    }
+
+    public function addtx()
     {
         return view('finance.addtransaction');
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
+    public function createtx(Request $request, $id)
     {
         $token = Session::get('token');
+        $day=$request->day;
+        $month=$request->month;
+        $year=$request->year;
+        $timestamp=$year.'-'.$month.'-'.$day;
         $type=$request->type;
         $desc=$request->desc;
         $amount=$request->amount;
+        // dd($id);
 
         $client = new Client;
         $request = $client->post(ENV('API_URLL'), [
@@ -53,7 +95,7 @@ class JournalController extends Controller
                         description:"'.$desc.'",
                         amount:"'.$amount.'",
                         timeStamp:"'.$timestamp.'",
-                        isFinish:"'.$isFinish.'"
+                        isFinish:true
                     ){
                         id
                     }
@@ -69,7 +111,7 @@ class JournalController extends Controller
 
         if($role){    
             Session::put('id',$role);
-            Session::put('finance.addtransaction',TRUE);
+            Session::put('finance.addtransaction', $id, TRUE);
             $request = $client->post(ENV('API_URLL'), [
                 'headers'=>[
                     'Authorization' => 'Bearer ' . $token
@@ -85,21 +127,14 @@ class JournalController extends Controller
             );
             $response = $request->getBody()->getContents();
             $data = json_decode($response, true);
-            return redirect('finance.journaldetails', $id);
+            return redirect('finance');
         }
         else{
             return redirect('finance.addtransaction')->with('alert','Data tidak tersimpan!');
         }
 
-        // return redirect('journaldetails', $id);
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function show($id)
     {
         $token = Session::get('token');
@@ -118,42 +153,65 @@ class JournalController extends Controller
         );
 
         $response = $request->getBody()->getContents();
-        $data = json_decode($response, true);
+        $dataTrx = json_decode($response, true);
+        $transaction = $dataTrx['data']['journalById']['transaction'];
+        $collectTypePenasukan = collect();
+        $collectTypePengeluaran = collect();
+        $pemasukanCalc = 0;
+        $pengeluaranCalc = 0; 
+        foreach($transaction as $trx){
+            $type = explode("-", $trx['type']);
+            if($type[0] == "101" || $type[0] == "102" || $type[0] == "103"){
+                $pemasukanCalc += $trx['amount'];
+                $collectTypePenasukan->push([
+                    "type" => $type[0],
+                    "description" => $trx['description'],
+                    "amount" => $trx['amount']
+                ]);
+            }
+            else{
+                $pengeluaranCalc += $trx['amount'];
+                $collectTypePengeluaran->push([
+                    "type" => $type[0],
+                    "description" => $trx['description'],
+                    "amount" => $trx['amount']
+                ]);
+            }
+        }
+
+        $data = [
+            "pemasukanCalc" => $pemasukanCalc,
+            "pengeluaranCalc" => $pengeluaranCalc,
+            "pemasukan" => $collectTypePenasukan,
+            "pengeluaran" => $collectTypePengeluaran,
+            "data" => $dataTrx
+        ];
+        // dd($data);
 
         return view('finance.journaldetails')->withData($data);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
+    public function calculate($id)
     {
-        //
+        $token = Session::get('token');
+        
+        $client = new Client;
+        $request = $client->post(ENV('API_URLL'), [
+            'headers'=>[
+                'Authorization' => 'Bearer ' . $token
+            ],
+            'json' => [
+                'query' => 'query{journalById(filter:"'.$id.'"){
+                    id timeStamp transaction{id amount timeStamp type description isFinish}
+                }}'
+                ]
+            ]
+        );
+
+        $response = $request->getBody()->getContents();
+        
+
+        return view('finance.detailstrx')->withData($data);
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
-    }
 }

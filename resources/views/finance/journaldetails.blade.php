@@ -19,11 +19,11 @@
             <div class="box-header">
                 <div class="pull-left">
                     <hi class="box-title">
-                        Jurnal {{$data['data']['journalById']['timeStamp']}}
+                        Jurnal {{$data['data']['data']['journalById']['timeStamp']}}
                     </h1>
                 </div>
                 <div class="pull-right">
-                    @include('addtransaction')
+                    @include('finance.addtransaction')
                 </div>
             </div>
         </div>
@@ -38,9 +38,10 @@
                                     <th>Deskripsi</th>
                                     <th>Jenis</th>
                                     <th>Jumlah</th>
+                                    <th>@include('finance.detailstrx')</th>
                                 </tr>
                             </thead>
-                            @foreach($data['data']['journalById']['transaction'] as $tx)
+                            @foreach($data['data']['data']['journalById']['transaction'] as $tx)
                             <tbody>
                                 <td>{{$tx['timeStamp']}}</td>
                                 <td>{{$tx['description']}}</td>

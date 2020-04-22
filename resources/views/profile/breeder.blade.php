@@ -37,7 +37,7 @@
                                         </tr>
                                         <tr>
                                             <td>
-                                                <p><a class="btn btn-primary btn-sm" href="/editbreeder" role="button">Edit Profile &raquo;</a></p>
+                                                <p><a class="btn btn-primary btn-sm" href="/breeder/edit" role="button">Edit Profile &raquo;</a></p>
                                             </td>
                                         </tr>
                                     </tbody>
@@ -110,7 +110,7 @@
                                         <td>{{$collection['breeder']}}</td>
                                         <td>
                                             <div class="button">
-                                                <a href="{{ route('birddetails.show', $collection['id']) }}" type="button" class="btn btn-block btn-sm bg-orange">
+                                                <a href="/birdfarm/birddetails/{{$collection['id']}}" type="button" class="btn btn-block btn-sm bg-orange">
                                                     Details
                                                 </a>
                                             </div>

@@ -20,7 +20,7 @@
             <div class="col-md-6">
                 <div class="box">
                     <div class="box-body">
-                        <form method="POST" action="{{ route('regbird.store') }}" enctype="multipart/form-data">
+                        <form method="POST" action="/birdfarm/regbird/create" enctype="multipart/form-data">
                             @csrf
                             <div class="form-group">
                                 <label for="ring">Kode Ring</label>
@@ -57,14 +57,15 @@
                             </div>
                             <div class="form-group">
                                 <label for="age">Usia</label>
-                                <input id="age" name="age" type="text" class="form-control" placeholder="Usia">
+                                <input id="age" name="age" type="date" class="form-control datepicker">
                             </div>
                             <div class="form-group">
                                 <label for="inputState">Induk</label>
                                 <select id="inputState" class="form-control">
+                                    <option selected>Null</option>
                                 {{-- @if($data['data']['user']['birdOwned']['gender'] == "Jantan") --}}
                                     @foreach($data['data']['user']['birdParent'] as $ind)
-                                    <option selected>{{$ind['noParent']}}</option>
+                                    <option>{{$ind['noParent']}}</option>
                                     @endforeach 
                                 {{-- @endif --}}
                                 </select>
@@ -87,3 +88,20 @@
     </section>
 </main>
 @endsection
+
+<!-- bootstrap datepicker -->
+    <script src="{{url('adminlte/bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js')}}"></script>
+    <script>
+    $(function () {
+        //Date picker
+        $('#age').datepicker({
+        dateFormat: 'dd-mm-yy'
+        autoclose: true
+        })
+
+        //Timepicker
+        $('.timepicker').timepicker({
+        showInputs: false
+        })
+    })
+    </script>

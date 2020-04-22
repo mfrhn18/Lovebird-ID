@@ -8,11 +8,6 @@ use GuzzleHttp\Client;
 
 class BreedingController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index()
     {
         $token = Session::get('token');
@@ -23,82 +18,30 @@ class BreedingController extends Controller
                 'Authorization' => 'Bearer ' . $token
             ],
             'json' => [
-                'query' => 'query{user{
-                    birdParent{id noParent breedingRecord{ name status} male{ring} female{ring}}
-                }}'
+                'query' => 'query{
+                    user{
+                        birdParent{
+                            id noParent image {
+                                src
+                            } male {
+                                species ring image { src }
+                            } female {
+                                species ring image { src }
+                            } breedingRecord {
+                                id name status log {
+                                    id type born dead timeStamp description
+                                }
+                            }
+                        }
+                    }
+                }'
                 ]
             ]
         );
 
         $response = $request->getBody()->getContents();
-        $data = json_decode($response, true);    
-
+        $data = json_decode($response, true);
         return view('breedingrecord.breeding')->withData($data);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
-    }
 }

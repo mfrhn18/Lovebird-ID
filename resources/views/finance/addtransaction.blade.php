@@ -19,11 +19,15 @@
             <div class="modal-body">
                 <div class="row">
                     <div class="col-xs-12">
-                        <form method="POST" action="{{ route('addtransaction.store') }}">
+                        <form method="POST" action="/finance/transaction/add" enctype="multipart/form-data">
                             @csrf
-                            <p id="date" class="text-center"></p>
                             <div class="form-group">
-                                <input id="timeStamp" name="timeStamp" type="hidden" value="timeStamp">
+                                <div class="input-group date">
+                                    <div class="input-group-addon">
+                                        <i class="fa fa-calendar"></i>
+                                    </div>
+                                    <input type="date" class="form-control datepicker pull-right" id="datepicker" name="datepicker">
+                                </div>
                             </div>
                             <div class="form-group">
                                 <label for="formGroupExampleInput">Tipe Transaksi</label><br>
@@ -63,10 +67,18 @@
     </div>
     <!-- /.modal -->
 
+    <!-- bootstrap datepicker -->
+    <script src="{{url('adminlte/bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js')}}"></script>
     <script>
-        var today = new Date();
-        var date = today.getDate()+'-'+(today.getMonth()+1)+'-'+today.getFullYear();
-        var timeStamp = today.getHours() + ":" + today.getMinutes()+", "+today.getDate()+'/'+(today.getMonth()+1)+'/'+today.getFullYear();
-        document.getElementById("date").innerHTML = date;
-        document.getElementById("timeStamp").innerHTML = timeStamp;
+    $(function () {
+        //Date picker
+        $('#datepicker').datepicker({
+        autoclose: true
+        })
+
+        //Timepicker
+        $('.timepicker').timepicker({
+        showInputs: false
+        })
+    })
     </script>

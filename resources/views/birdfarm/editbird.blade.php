@@ -20,15 +20,23 @@
             <div class="col-md-6">
                 <div class="box">
                     <div class="box-body">
-                        <form method="POST" action="{{ route('editbirddetails.store') }}">
+                        <form method="POST" action="/birdfarm/birddetails/edit/save/{{$data['data']['data']['birdFilterById']['id']}}">
                             @csrf
+                            <div class="text-center">
+                                <img class="text-center" src="{{$data['data']['data']['birdFilterById']['image'][0]['src']}}" height="250">
+                            </div>
+                            <br class="pt-2 pb-2">
+                            <div class="form-group">
+                                <label for="file">Upload Foto</label>
+                                <input type="file" name="file" class="form-control-file" id="file">
+                            </div>
                             <div class="form-group">
                                 <label for="ring">Kode Ring</label>
-                                <input id="ring" name="ring" type="text" class="form-control" placeholder="Kode Ring">
+                                <input id="ring" name="ring" type="text" class="form-control" placeholder="{{$data['data']['data']['birdFilterById']['ring']}}" disabled>
                             </div>
                             <div class="form-group">
                                 <label for="species">Warna Mutasi</label>
-                                <input id="species" name="species" type="text" class="form-control" placeholder="Warna Mutasi">
+                                <input id="species" name="species" type="text" class="form-control" placeholder="{{$data['data']['data']['birdFilterById']['species']}}">
                             </div>
                             <div class="form-group">
                                 <label for="formGroupExampleInput">Jenis Burung</label><br>
@@ -46,25 +54,23 @@
                             </div>
                             <div class="form-group">
                                 <label for="name">Nama</label>
-                                <input id="name" name="name" type="text" class="form-control" placeholder="Nama">
+                                <input id="name" name="name" type="text" class="form-control" placeholder="{{$data['data']['data']['birdFilterById']['name']}}">
                             </div>
                             <div class="form-group">
                                 <label for="gender">Kelamin</label>
-                                <select id="gender" name="gender" class="form-control">
-                                    <option selected>Jantan</option>
-                                    <option>Betina</option>
-                                </select>
+                                <input id="gender" name="gender" type="text" class="form-control" placeholder="{{$data['data']['data']['birdFilterById']['gender']}}">
                             </div>
                             <div class="form-group">
                                 <label for="age">Usia</label>
-                                <input id="age" name="age" type="text" class="form-control" placeholder="Usia">
+                                <input id="age" name="age" type="text" class="form-control" placeholder="{{$data['data']['data']['birdFilterById']['age']}}">
                             </div>
                             <div class="form-group">
                                 <label for="inputState">Induk</label>
                                 <select id="inputState" class="form-control">
+                                <option value=" " selected>Select</option>
                                 {{-- @if($data['data']['user']['birdOwned']['gender'] == "Jantan") --}}
-                                    @foreach($data['data']['user']['birdParent'] as $ind)
-                                    <option selected>{{$ind['noParent']}}</option>
+                                    @foreach($data['parent']['data']['user']['birdParent'] as $ind)
+                                    <option value="{{$ind['id']}}">{{$ind['noParent']}}</option>
                                     @endforeach 
                                 {{-- @endif --}}
                                 </select>
@@ -73,13 +79,7 @@
                                 <label for="breeder">Peternak</label>
                                 <input id="breeder" name="breeder" type="text" class="form-control" placeholder="Peternak">
                             </div>
-                            {{-- <form>
-                                <div class="form-group">
-                                    <label for="exampleFormControlFile1">Upload Foto</label>
-                                    <input type="file" class="form-control-file" id="exampleFormControlFile1">
-                                </div>
-                            </form> --}}
-                            <button type="submit" class="btn btn-primary">Register</button>
+                            <button type="submit" class="btn btn-primary">Save</button>
                         </form>
                     </div>
                 </div>

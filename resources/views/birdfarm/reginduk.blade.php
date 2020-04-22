@@ -20,7 +20,7 @@
             <div class="col-md-6">
                 <div class="box">
                     <div class="box-body">
-                        <form method="POST" action="{{ route('reginduk.store') }}">
+                        <form method="POST" action="/birdfarm/reginduk/create" enctype="multipart/form-data">
                         @csrf
                             <div class="form-group">
                                 <label for="noParent">No. Induk</label>
@@ -29,20 +29,26 @@
                             <div class="form-group">
                                 <label for="male">List Burung Jantan</label>
                                 <select name="male" id="male" class="form-control">
-                                {{-- @if($data['data']['user']['birdOwned']['gender'] == "Jantan") --}}
                                     @foreach($data['data']['user']['birdOwned'] as $male)
-                                    <option selected value="{{$male['id']}}">{{$male['ring']}}</option>
+                                        @if($male['gender'] == "Jantan")
+                                            <option selected value="{{$male['id']}}">{{$male['ring']}} - {{$male['species']}}</option>
+                                        @endif
                                     @endforeach 
-                                {{-- @endif --}}
                                 </select>
                             </div>
                             <div class="form-group">
                                 <label for="female">List Burung Betina</label>
                                 <select name="female" id="female" class="form-control">
                                     @foreach($data['data']['user']['birdOwned'] as $female)
-                                    <option selected value="{{$female['id']}}">{{$female['ring']}}</option>
-                                    @endforeach
+                                        @if($female['gender'] == "Betina")
+                                            <option selected value="{{$female['id']}}">{{$female['ring']}} - {{$female['species']}}</option>
+                                        @endif
+                                    @endforeach 
                                 </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="file">Upload Foto</label>
+                                <input type="file" name="file" class="form-control-file" id="file">
                             </div>
                             <button type="submit" class="btn btn-primary">Register</button>
                         </form>           

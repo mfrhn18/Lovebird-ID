@@ -28,27 +28,27 @@
         <ul class="sidebar-menu" data-widget="tree">
             <li class="header">MAIN NAVIGATION</li>
             <li>
-                <a href="home">
+                <a href="/home">
                     <i class="fa fa-dashboard"></i> <span>Dashboard</span>
                 </a>
             </li>
             <li>
-                <a href="birdfarm">
+                <a href="/birdfarm">
                     <i class="glyphicon glyphicon-info-sign"></i> <span>BirdFarm Management</span>
                 </a>
             </li>
             <li>
-                <a href="breeding">
+                <a href="/breeding">
                     <i class="glyphicon glyphicon-record"></i> <span>Breeding</span>
                 </a>
             </li>
             <li>
-                <a href="gallery">
+                <a href="/gallery">
                     <i class="fa fa-picture-o"></i> <span>Gallery</span>
                 </a>
             </li>
             <li>
-                <a href="finance">
+                <a href="/finance">
                     <i class="fa fa-dollar"></i> <span>Finance</span>
                 </a>
             </li>

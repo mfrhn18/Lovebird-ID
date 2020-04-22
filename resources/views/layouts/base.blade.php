@@ -91,9 +91,35 @@
     <script src="{{url('adminlte/dist/js/pages/dashboard.js')}}"></script>
     <!-- AdminLTE for demo purposes -->
     <script src="{{url('adminlte/dist/js/demo.js')}}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+    <script src="https://www.bouldercounty.org/_layouts/bccustom/scripts/jquery.tablesorter.min.js"></script>
 
     @section('js')
     
+<!--     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+    <script src="https://www.bouldercounty.org/_layouts/bccustom/scripts/jquery.tablesorter.min.js"></script>
+    <script>
+        //here is the custom JS we would like to add
+        $("#choice").change(function() {
+        $("#table tbody tr").hide();
+        $("#table tbody tr." + $(this).val()).show("fast");
+        });
+        
+        $("#choice").val('all').change();
+        
+        //this JS calls the tablesorter plugin that we already use on our site
+        $("#table").tablesorter({ sortList: [[0, 0]] });
+    </script> -->
+
         @show
 </body>
+
+<script>
+  var msg = '{{Session::get('alert')}}';
+  var exist = '{{Session::has('alert')}}';
+  if(exist){
+    alert(msg);
+  }
+</script>
+
 </html>
